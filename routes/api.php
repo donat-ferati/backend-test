@@ -11,6 +11,7 @@ Route::post('login', LoginController::class)->name('login');
 Route::post('register', RegisterController::class)->name('register');
 
 Route::group(['middleware' => ['auth:sanctum'], 'as' => 'api.'], function () {
+
     //PACKAGES
     Route::get('/packages', ListPackagesController::class)->name('packages.index');
     Route::post('/packages/register', RegisterPackageController::class)->name('packages.register');
