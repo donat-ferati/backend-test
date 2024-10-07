@@ -8,13 +8,37 @@ use Tests\TestCase;
 
 class RegisterControllerTest extends TestCase
 {
-    /**
-     * A basic feature test example.
-     */
-    public function test_example(): void
-    {
-        $response = $this->get('/');
+    use RefreshDatabase;
 
-        $response->assertStatus(200);
+    public function test_customer_can_register_successfully()
+    {
+        $response = $this->postJson('/api/register', [
+            'name' => 'John Doe',
+            'email' => 'john@example.com',
+            'password' => 'password123',
+            'password_confirmation' => 'password123',
+        ]);
+
+        $response->assertStatus(200)
+            ->assertJsonStructure(['data']);
+    }
+
+    public function test_registration_fails_with_existing_email()
+    {
+        $this->postJson('/api/register', [
+            'name' => 'John Doe',
+            'email' => 'john@example.com',
+            'password' => 'password123',
+            'password_confirmation' => 'password123',
+        ]);
+
+        $response = $this->postJson('/api/register', [
+            'name' => 'Jane Doe',
+            'email' => 'john@example.com',
+            'password' => 'password123',
+            'password_confirmation' => 'password123',
+        ]);
+
+        $response->assertStatus(422);
     }
 }

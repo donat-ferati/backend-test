@@ -2,27 +2,20 @@
 
 namespace App\Http\Requests\API\Package;
 
-use Illuminate\Foundation\Http\FormRequest;
+use App\Http\Requests\APIRequest;
 
-class RegisterPackageRequest extends FormRequest
+class RegisterPackageRequest extends APIRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
-     */
     public function rules(): array
     {
         return [
-            //
+            'customer_id' => ['required', 'exists:customers,id'],
+            'package_id' => ['required', 'exists:packages,id'],
         ];
     }
 }

@@ -2,16 +2,21 @@
 
 namespace App\Http\Controllers\API\Package;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Http\Controllers\APIController;
+use App\Models\Package;
 
-class ListPackagesController extends Controller
+class ListPackagesController extends APIController
 {
-    /**
-     * Handle the incoming request.
-     */
-    public function __invoke(Request $request)
+    public function __invoke()
     {
-        //
+        $data = Package::query()
+            ->withCount('registrations')
+            ->get()
+            ->map(function ($package) {
+                $package->availability = $package->registrations_count < $package->limit ? __('app.available') : __('app.unavailable');
+                return $package;
+            });
+
+        return $this->respondWithSuccess($data);
     }
 }

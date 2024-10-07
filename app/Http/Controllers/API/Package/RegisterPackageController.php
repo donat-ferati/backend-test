@@ -2,16 +2,32 @@
 
 namespace App\Http\Controllers\API\Package;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Http\Controllers\APIController;
+use App\Http\Requests\API\Package\RegisterPackageRequest;
+use App\Models\Package;
+use App\Models\Registration;
+use Illuminate\Support\Str;
 
-class RegisterPackageController extends Controller
+class RegisterPackageController extends APIController
 {
-    /**
-     * Handle the incoming request.
-     */
-    public function __invoke(Request $request)
+    public function __invoke(RegisterPackageRequest $request)
     {
-        //
+        $package = Package::query()
+            ->withCount('registrations')
+            ->find($request->package_id);
+
+        if ($package->registrations_count >= $package->limit) {
+            return $this->respondWithError(null, __('app.package_not_available_registration'), 422);
+        }
+
+        $registration = Registration::query()
+            ->create([
+                'uuid' => Str::uuid(),
+                'customer_id' => $request->customer_id,
+                'package_id' => $request->package_id,
+                'registered_at' => now(),
+            ]);
+
+        return $this->respondWithSuccess($registration);
     }
 }
