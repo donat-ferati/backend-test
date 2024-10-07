@@ -6,6 +6,7 @@ use App\Http\Controllers\APIController;
 use App\Http\Requests\API\Package\RegisterPackageRequest;
 use App\Models\Package;
 use App\Models\Registration;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 
 class RegisterPackageController extends APIController
@@ -27,6 +28,11 @@ class RegisterPackageController extends APIController
                 'package_id' => $request->package_id,
                 'registered_at' => now(),
             ]);
+
+        $customerId = auth()->id();
+        $cacheKey = "customer_{$customerId}_packages";
+
+        Cache::forget($cacheKey);
 
         return $this->respondWithSuccess($registration);
     }

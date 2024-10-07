@@ -51,7 +51,7 @@ Follow these steps to set up the project on your local environment:
 
 ## API Endpoints
 
-### User Registration
+### User And Client Registration
 - **Endpoint**: `/api/register`
 - **Method**: `POST`
 - **Parameters**:
@@ -63,7 +63,7 @@ Follow these steps to set up the project on your local environment:
   - 201 on success
   - 422 on validation error
 
-### User Login
+### User And Customer Login
 - **Endpoint**: `/api/login`
 - **Method**: `POST`
 - **Parameters**:
@@ -83,7 +83,6 @@ Follow these steps to set up the project on your local environment:
 - **Endpoint**: `/api/packages/register`
 - **Method**: `POST`
 - **Parameters**:
-  - `customer_id` (integer, required)
   - `package_id` (integer, required)
 - **Response**:
   - 201 on success
