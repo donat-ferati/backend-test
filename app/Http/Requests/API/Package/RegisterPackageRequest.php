@@ -14,8 +14,7 @@ class RegisterPackageRequest extends APIRequest
     public function rules(): array
     {
         return [
-            'customer_id' => ['required', 'exists:customers,id'],
-            'package_id' => ['required', 'exists:packages,id'],
+            'package_id' => ['required', 'exists:packages,id']
         ];
     }
 }

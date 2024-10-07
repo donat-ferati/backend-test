@@ -23,7 +23,7 @@ class RegisterPackageController extends APIController
         $registration = Registration::query()
             ->create([
                 'uuid' => Str::uuid(),
-                'customer_id' => $request->customer_id,
+                'customer_id' => auth()->id(),
                 'package_id' => $request->package_id,
                 'registered_at' => now(),
             ]);
