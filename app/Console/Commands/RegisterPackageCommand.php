@@ -6,6 +6,7 @@ use App\Models\Customer;
 use App\Models\Package;
 use App\Models\Registration;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 
 class RegisterPackageCommand extends Command
@@ -62,6 +63,10 @@ class RegisterPackageCommand extends Command
             'package_id' => $package->id,
             'registered_at' => now(),
         ]);
+
+
+        $cacheKey = "customer_{$customer->id}_packages";
+        Cache::forget($cacheKey);
 
         $this->info("Package '{$package->name}' successfully registered for customer '{$customer->name}'.");
     }
